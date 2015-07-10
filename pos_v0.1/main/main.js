@@ -1,6 +1,6 @@
 function getcount(inputs, i) {
   var count = 1;
-  for (var x = i + 1; x < inputs.length; x++) {
+  for (var x = i + 1; x < inputs.length; x ++) {
     if (inputs[x].barcode === inputs[i].barcode) {
       count++;
     }
@@ -19,7 +19,7 @@ function print(input ,count){
   return {text: text, totalprice: totalPrice};
 }
 function printReceipt(inputs) {
-  var text = '***<没钱赚商店>收据***\n'; 
+  var text = '***<没钱赚商店>收据***\n';
   var totalPrice = 0;
   for(var i = 0;i < inputs.length; i+=number){
     var number = getcount(inputs,i);
