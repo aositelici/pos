@@ -15,14 +15,13 @@ function reWriteInput(inputs) {
   return result;
 }
 function getCount(printItem,sale){
-  for(var i = 0; i < sale.barcodes.length; i++){
-    if(printItem.barcode === sale.barcodes[i]){
+  printItem.countSale = 0;
+  sale.barcodes.forEach(function(bar){
+    if(printItem.barcode === bar){
       printItem.countSale = parseInt(printItem.count/3);
-      break;
+      return printItem;
     }
-    else
-      printItem.countSale = 0;
-  }
+  });
   return printItem;
 }
 function getPrintItem(input,all,sale){
@@ -61,7 +60,7 @@ function printDetail1(inputs) {
 function printDetail2(inputs) {
   var text = '';
   inputs.forEach(function(input){
-    if(input.countSale != 0){
+    if(input.countSale){
       text += '名称：' + input.name + '，' + '数量：' + input.countSale + input.unit + '\n';
     }
   });

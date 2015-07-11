@@ -1,7 +1,7 @@
 function reWriteInput(inputs) {
   var count = {};
   inputs.forEach(function(input){
-    if(input.indexOf('-') !== -1){
+    if(_.includes(input,'-')){
       count[input.slice(0,input.length-2)] = parseInt(input.slice(-1));
     }
     else{
@@ -16,7 +16,7 @@ function reWriteInput(inputs) {
 }
 function getCount(printItem,sale){
   printItem.countSale = 0;
-  if(_.pluck(sale, 'barcodes').indexOf(printItem.barcode)){
+  if(_.includes(sale.barcodes,printItem.barcode)){
     printItem.countSale = parseInt(printItem.count/3);
   }
 }
@@ -24,9 +24,8 @@ function getPrintItem(input,all,sale){
   var printItem = all.filter(function(item){
     return ((_.pluck(input, 'barcode')).indexOf(item.barcode) !== -1);
   });
-  var i = 0;
   printItem.forEach(function(item){
-    item.count = input[i++].count;
+    item.count = input[_.findIndex(printItem,item)].count;
     getCount(item,sale);
   });
   return printItem;
@@ -52,7 +51,7 @@ function printDetail1(inputs) {
 function printDetail2(inputs) {
   var text = '';
   inputs.forEach(function(input){
-    if(input.countSale != 0){
+    if(input.countSale){
       text += '名称：' + input.name + '，' + '数量：' + input.countSale + input.unit + '\n';
     }
   });
