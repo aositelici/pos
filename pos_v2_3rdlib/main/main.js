@@ -1,20 +1,3 @@
-/*function ChangedInput(barcode, count){
-  this.barcode = barcode;
-  this.count = count ;
-}
-function NewItem(barcode, name, unit, price, count, countsale) {
-  this.barcode = barcode;
-  this.name = name;
-  this.unit = unit;
-  this.price = price || 0.00;
-  this.count = count ;
-  this.countSale = countsale || 0;
-}
-function PrintDetail(text,price,saleprice){
-  this.text = text;
-  this.price = price;
-  this.saleprice = saleprice;
-}*/
 function reWriteInput(inputs) {
   var count = {};
   inputs.forEach(function(input){
