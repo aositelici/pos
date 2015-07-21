@@ -1,31 +1,74 @@
-function getcount(inputs, i) {
-  var count = 1;
-  for (var x = i + 1; x < inputs.length; x ++) {
-    if (inputs[x].barcode === inputs[i].barcode) {
-      count++;
+function printReceipt(items) {
+  var itemCarts = getItemCart(items);
+
+  var receipt =
+    '***<没钱赚商店>收据***\n' +
+    getItemsString(itemCarts) +
+    '----------------------\n' +
+    '总计：' + formatPrice(getAmount(itemCarts)) + '(元)\n' +
+    '**********************';
+
+  console.log(receipt);
+
+}
+function getItemCart(items){
+  var itemCarts = [];
+  items.forEach(function(item){
+    var itemCart = findItemCart(itemCarts,item.barcode);
+    if(itemCart){
+      itemCart.count++;
     }
-    else {
-      break;
+    else{
+      itemCarts.push(
+        {
+          subItem:item,
+          count:1
+        }
+      );
+  }
+});
+  return itemCarts;
+}
+function findItemCart(items,barcode){
+  var value;
+  items.forEach(function(item){
+
+    if(item.subItem.barcode === barcode){
+      value = item;
+      return false;
     }
-  }
-  return count;
+  });
+  return value;
 }
-function print(input ,count){
-  var item=['名称：','数量：','单价：','小计：'];
-  var unit='(元)';
-  var totalPrice = count*input.price;
-  var text = item[0] + input.name + '，' +item[1] + count + input.unit + '，' + item[2] +input.price.toFixed(2) + unit + '，'
-    + item[3] + totalPrice.toFixed(2) + unit +'\n';
-  return {text: text, totalprice: totalPrice};
+function getSubTotal(count, price) {
+  return count * price;
 }
-function printReceipt(inputs) {
-  var text = '***<没钱赚商店>收据***\n';
-  var totalPrice = 0;
-  for(var i = 0;i < inputs.length; i+=number){
-    var number = getcount(inputs,i);
-    text += print(inputs[i],number).text;
-    totalPrice += print(inputs[i],number).totalprice;
-  }
-  text += '----------------------\n' + '总计：' + totalPrice.toFixed(2) + '(元)\n' +'**********************';
-  console.log(text);
+
+function getAmount(items) {
+  var amount = 0;
+
+  items.forEach(function(item) {
+    amount += getSubTotal(item.count, item.subItem.price);
+  });
+
+  return amount;
 }
+
+function getItemsString(items) {
+
+  var itemsString = '';
+  items.forEach(function(item) {
+    itemsString +=
+      '名称：' + item.subItem.name +
+      '，数量：' + item.count + item.subItem.unit +
+      '，单价：' + formatPrice(item.subItem.price) +
+      '(元)，小计：' + formatPrice(getSubTotal(item.count, item.subItem.price)) + '(元)\n';
+  });
+
+  return itemsString;
+}
+
+function formatPrice(price) {
+  return price.toFixed(2);
+}
+
