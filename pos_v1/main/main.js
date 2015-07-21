@@ -1,7 +1,4 @@
 function printReceipt(barcodes) {
-  //var allItems = loadAllItems();
- // var items = getItems(allItems, barcodes);
-
   var cartItems = getCartItems(barcodes);
   getPromotions(cartItems);
   var receipt =
@@ -17,24 +14,11 @@ function printReceipt(barcodes) {
 
   console.log(receipt);
 }
+
 function getItems( barcode) {
   var allItems = loadAllItems();
-  /*var items = [];
-  var item = findItem(allItems, barcode);
-  if (item) {
-    items.push(item);
-  }
-  return items;*/
-  for(var i = 0; i < allItems.length; i++) {
-    if(allItems[i].barcode === barcode){
-      return allItems[i];
-    }
-  }
-
-}
-function findItem(items, barcode) {
   var value;
-  items.forEach(function (item) {
+  allItems.forEach(function (item) {
     if (item.barcode === barcode) {
       value = item;
       return;
@@ -42,6 +26,7 @@ function findItem(items, barcode) {
   })
   return value;
 }
+
 function getCartItems(barcodes) {
   var cartItems = [];
   var allItems = loadAllItems();
@@ -66,32 +51,25 @@ function getCartItems(barcodes) {
   });
   return cartItems;
 }
+
 function getPromotions(cartItems) {
   var saleItems = loadPromotions();
   cartItems.forEach(function (itemCart) {
     calculateSalesCount(saleItems, itemCart);
   });
-  return cartItems;
 }
+
 function findCartItem(cartItems, barcode) {
-  //var value;
-  /*
-   items.forEach(function (item) {
-   if (item.subItem.barcode === barcode) {
-   value = item;
+  var value;
+  cartItems.forEach(function (cartItem) {
+   if (cartItem.subItem.barcode === barcode) {
+   value = cartItem;
    return false;
    }
-   });*/
-
-  for(var i = 0; i < cartItems.length; i++) {
-    //console.log(items[i]);
-    if(cartItems[i].subItem.barcode === barcode) {
-      return  cartItems[i];
-    }
-  }
-  //console.log(value);
- // return value;
+  });
+  return value;
 }
+
 function calculateSalesCount(items, itemCart) {
   var barcodes = items[0].barcodes;
   for (var i = 0; i < barcodes.length; i++)
@@ -100,23 +78,11 @@ function calculateSalesCount(items, itemCart) {
       break;
     }
 }
+
 function sale(count) {
   return Math.floor(count / 3);
 }
 
-function getHiddenCount(items, barcode) {
-  var count = 1;
-  items.forEach(function (item) {
-    if (item.barcode === barcode.slice(0, 10)) {
-      if (barcode.indexOf('-') != -1) {
-        count = parseInt(barcode.slice(-1));
-      }
-      return;
-    }
-    ;
-  });
-  return count;
-}
 function getSubTotal(count, price) {
   return count * price;
 }
