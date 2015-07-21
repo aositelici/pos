@@ -1,7 +1,6 @@
 function printReceipt(barcodes) {
-  var items = [];
   var allItems = loadAllItems();
-  items = getItems(allItems,barcodes);
+  var items = getItems(allItems,barcodes);
   var cartItems = getCartItem(items);
 
   var receipt =
@@ -11,9 +10,9 @@ function printReceipt(barcodes) {
     '挥泪赠送商品：\n' +
     getSalesItemString(cartItems)+
     '----------------------\n' +
-  '总计：' + formatPrice(getAmount(cartItems)) + '(元)\n' +
-  '节省：'+formatPrice(getSalesAmount(cartItems))+'(元)\n' +
-  '**********************';
+    '总计：' + formatPrice(getAmount(cartItems)) + '(元)\n' +
+    '节省：'+formatPrice(getSalesAmount(cartItems))+'(元)\n' +
+    '**********************';
 
   console.log(receipt);
 }
@@ -23,7 +22,7 @@ function getItems(allItems,barcodes){
     var item = findItem(allItems,barcode);
     var count =getHiddenCount(allItems,barcode);
     if(item){
-      for(var i =0;i<count;i++){
+      for(var i = 0; i < count; i++){
         items.push(item);
       }
     }
@@ -52,16 +51,19 @@ function getCartItem(items){
   var saleItems = loadPromotions();
   itemCarts.forEach(function(itemCart){
     calculateSalesCount(saleItems,itemCart);
-  })
+  });
   return itemCarts;
 }
 function calculateSalesCount(items,itemCart) {
   var barcodes = items[0].barcodes;
   for(var i =0; i < barcodes.length; i++)
    if(itemCart.subItem.barcode === barcodes[i]){
-     itemCart.saleCount = parseInt(itemCart.count/3);
+     itemCart.saleCount = sale(itemCart.count);
      break;
    }
+}
+function sale(count){
+  return Math.floor(count/3);
 }
 function findCartItem(items,barcode){
   var value;
