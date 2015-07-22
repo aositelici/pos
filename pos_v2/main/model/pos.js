@@ -2,6 +2,7 @@ function Pos(tags, allItems, promotions) {
   this.tags = tags;
   this.allItems = allItems;
   this.promotions = promotions;
+  this.f = function (){};
 }
 
 Pos.prototype.getCartItems = function () {
@@ -10,6 +11,7 @@ Pos.prototype.getCartItems = function () {
   this.tags.forEach(function (tag) {
     var barcodeString = tag.split('-')[0];
     var count = tag.split('-')[1] || 1;
+    this.f();
     var cartItem = this.findCartItem(cartItems, barcodeString);
     if (cartItem) {
       cartItem.count += count;
@@ -22,9 +24,9 @@ Pos.prototype.getCartItems = function () {
   });
 
   return cartItems;
-}
+};
 
-Pos.prototype.findCartItem = function(cartItems, barcodeString) {
+Pos.prototype.findCartItem = function(cartItems, barcode) {
   var value;
 
   cartItems.forEach(function (cartItem) {
@@ -35,7 +37,11 @@ Pos.prototype.findCartItem = function(cartItems, barcodeString) {
   });
 
   return value;
-}
+};
+
+
+
+
 
 Pos.prototype.getItems =function ( barcode) {
   var value;
@@ -48,12 +54,13 @@ Pos.prototype.getItems =function ( barcode) {
   });
 
   return value;
-}
+};
 Pos.prototype.getPromotions = function(cartItems) {
   cartItems.forEach(function (itemCart) {
     this.calculateSalesCount(this.promotions, itemCart);
   });
-}
+  //return cartItems;
+};
 Pos.prototype.getBuyTwoGetOneFree = function(promotions) {
   for(var i = 0; i < promotions.length-1; i++){
     var promotion = new Promotion(promotions[i].type,promotions[i].barcodes);
@@ -61,7 +68,7 @@ Pos.prototype.getBuyTwoGetOneFree = function(promotions) {
       return promotion.barcodes;
     }
   }
-}
+};
 Pos.prototype.calculateSalesCount = function(promotions, itemCart) {
   var barcodes = this.getBuyTwoGetOneFree(promotions);
   for (var i = 0; i < barcodes.length; i++)
@@ -69,6 +76,6 @@ Pos.prototype.calculateSalesCount = function(promotions, itemCart) {
       itemCart.saleCount = sale(itemCart.count);
       break;
     }
-}
+};
 
 
