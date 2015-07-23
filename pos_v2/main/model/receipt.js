@@ -11,6 +11,7 @@ function Receipt(cartItems) {
 Receipt.prototype.getItemsString = function (carItems) {
   var itemsString = '';
   var othis = this;
+
   carItems.forEach(function (item) {
     itemsString +=
       '名称：' + item.name +
@@ -39,6 +40,7 @@ Receipt.prototype.getSalesItemString = function (carItems) {
 Receipt.prototype.getAmount = function (carItems) {
   var amount = 0;
   var othis = this;
+
   carItems.forEach(function (item) {
     amount += othis.getSubTotal(item.count - item.saleCount, item.price);
   });
@@ -49,11 +51,11 @@ Receipt.prototype.getAmount = function (carItems) {
 Receipt.prototype.getSalesAmount = function (carItems) {
   var amount = 0;
   var othis = this;
+
   carItems.forEach(function (item) {
     if (item.saleCount !== 0) {
       amount += othis.getSubTotal(item.saleCount, item.price);
     }
-
   });
 
   return amount;
