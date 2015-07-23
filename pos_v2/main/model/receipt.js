@@ -7,18 +7,6 @@ function Receipt(cartItems) {
   this.salesItemString = this.getSalesItemString(cartItems);
   this.amount = this.formatPrice(this.getAmount(cartItems));
   this.salesAmount = this.formatPrice(this.getSalesAmount(cartItems));
-  this.receipt = '***<没钱赚商店>收据***\n' +
-    '打印时间：'
-    + this.data + '\n' +
-    '----------------------\n' +
-    this.itemString +
-    '----------------------\n' +
-    '挥泪赠送商品：\n' +
-    this.salesItemString +
-    '----------------------\n' +
-    '总计：' + this.amount + '(元)\n' +
-    '节省：' + this.salesAmount + '(元)\n' +
-    '**********************';
 }
 Receipt.prototype.getItemsString = function (carItems) {
   var itemsString = '';
@@ -78,3 +66,17 @@ Receipt.prototype.formatPrice = function (price) {
   return price.toFixed(2);
 }
 
+Receipt.prototype.printReceipt = function () {
+  return '***<没钱赚商店>收据***\n' +
+  '打印时间：'
+  + this.data + '\n' +
+  '----------------------\n' +
+  this.itemString +
+  '----------------------\n' +
+  '挥泪赠送商品：\n' +
+  this.salesItemString +
+  '----------------------\n' +
+  '总计：' + this.amount + '(元)\n' +
+  '节省：' + this.salesAmount + '(元)\n' +
+  '**********************';
+}
