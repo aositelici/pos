@@ -18,7 +18,7 @@ Pos.prototype.getCartItems = function () {
     }
     else {
       var item = myThis.getItems(barcodeString);
-      var cartItem = new CartItem(item.barcode, item.name, item.unit, item.price, count, 0);
+      var cartItem = new CartItem(item, count, 0);
       cartItems.push(cartItem);
     }
   });
@@ -30,7 +30,7 @@ Pos.prototype.findCartItem = function (cartItems, barcode) {
   var value;
 
   cartItems.forEach(function (cartItem) {
-    if (cartItem.barcode === barcode) {
+    if (cartItem.item.barcode === barcode) {
       value = cartItem;
       return false;
     }
@@ -78,7 +78,7 @@ Pos.prototype.calculateSalesCount = function (promotions, cartItem) {
   var barcodes = this.getBuyTwoGetOneFree(promotions);
 
   for (var i = 0; i < barcodes.length; i++) {
-    if (cartItem.barcode === barcodes[i]) {
+    if (cartItem.item.barcode === barcodes[i]) {
       cartItem.saleCount = this.sale(cartItem.count);
       break;
     }

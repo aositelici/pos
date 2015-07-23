@@ -14,10 +14,10 @@ Receipt.prototype.getItemsString = function (carItems) {
 
   carItems.forEach(function (item) {
     itemsString +=
-      '名称：' + item.name +
-      '，数量：' + item.count + item.unit +
-      '，单价：' + othis.formatPrice(item.price) +
-      '(元)，小计：' + othis.formatPrice(othis.getSubTotal(item.count - item.saleCount, item.price)) + '(元)\n';
+      '名称：' + item.item.name +
+      '，数量：' + item.count + item.item.unit +
+      '，单价：' + othis.formatPrice(item.item.price) +
+      '(元)，小计：' + othis.formatPrice(othis.getSubTotal(item.count - item.saleCount, item.item.price)) + '(元)\n';
   });
 
   return itemsString;
@@ -29,8 +29,8 @@ Receipt.prototype.getSalesItemString = function (carItems) {
   carItems.forEach(function (item) {
     if (item.saleCount != 0) {
       itemsString +=
-        '名称：' + item.name +
-        '，数量：' + item.saleCount + item.unit + '\n';
+        '名称：' + item.item.name +
+        '，数量：' + item.saleCount + item.item.unit + '\n';
     }
   });
 
@@ -42,7 +42,7 @@ Receipt.prototype.getAmount = function (carItems) {
   var othis = this;
 
   carItems.forEach(function (item) {
-    amount += othis.getSubTotal(item.count - item.saleCount, item.price);
+    amount += othis.getSubTotal(item.count - item.saleCount, item.item.price);
   });
 
   return amount;
@@ -54,7 +54,7 @@ Receipt.prototype.getSalesAmount = function (carItems) {
 
   carItems.forEach(function (item) {
     if (item.saleCount !== 0) {
-      amount += othis.getSubTotal(item.saleCount, item.price);
+      amount += othis.getSubTotal(item.saleCount, item.item.price);
     }
   });
 
@@ -70,15 +70,15 @@ Receipt.prototype.formatPrice = function (price) {
 
 Receipt.prototype.printReceipt = function () {
   return '***<没钱赚商店>收据***\n' +
-  '打印时间：'
-  + this.data + '\n' +
-  '----------------------\n' +
-  this.itemString +
-  '----------------------\n' +
-  '挥泪赠送商品：\n' +
-  this.salesItemString +
-  '----------------------\n' +
-  '总计：' + this.amount + '(元)\n' +
-  '节省：' + this.salesAmount + '(元)\n' +
-  '**********************';
+    '打印时间：'
+    + this.data + '\n' +
+    '----------------------\n' +
+    this.itemString +
+    '----------------------\n' +
+    '挥泪赠送商品：\n' +
+    this.salesItemString +
+    '----------------------\n' +
+    '总计：' + this.amount + '(元)\n' +
+    '节省：' + this.salesAmount + '(元)\n' +
+    '**********************';
 }
