@@ -1,64 +1,52 @@
-function Receipt(cartItems) {
+function Receipt(cartItems,amount,salesAmounts,salesCounts) {
   var currentDate = new Date();
   var dataShow = new DataShow(currentDate);
 
   this.data = dataShow.formattedDateString;
-  this.itemString = this.getItemsString(cartItems);
-  this.salesItemString = this.getSalesItemString(cartItems);
-  this.amount = this.formatPrice(this.getAmount(cartItems));
-  this.salesAmount = this.formatPrice(this.getSalesAmount(cartItems));
+  this.itemString = this.getItemsString(cartItems,salesAmounts);
+  this.salesItemString = this.getSalesItemString(cartItems,salesCounts);
+  this.amount = this.formatPrice(this.getAmount(amount,salesAmounts));
+  this.salesAmount = this.formatPrice(this.getSalesAmount(salesAmounts));
 }
-Receipt.prototype.getItemsString = function (carItems) {
+Receipt.prototype.getItemsString = function (cartItems,salesAmounts) {
   var itemsString = '';
-  var othis = this;
+  var _this = this;
 
-  carItems.forEach(function (item) {
+  for(var i = 0; i < cartItems.length; i++){
     itemsString +=
-      '名称：' + item.item.name +
-      '，数量：' + item.count + item.item.unit +
-      '，单价：' + othis.formatPrice(item.item.price) +
-      '(元)，小计：' + othis.formatPrice(othis.getSubTotal(item.count - item.saleCount, item.item.price)) + '(元)\n';
-  });
-
+      '名称：' + cartItems[i].item.name +
+      '，数量：' + cartItems[i].count + cartItems[i].item.unit +
+      '，单价：' + _this.formatPrice(cartItems[i].item.price) +
+      '(元)，小计：' + _this.formatPrice(cartItems[i].item.price*cartItems[i].count - salesAmounts[i]) + '(元)\n';
+  }
   return itemsString;
 }
 
-Receipt.prototype.getSalesItemString = function (carItems) {
+Receipt.prototype.getSalesItemString = function (cartItems,salesCounts) {
   var itemsString = '';
 
-  carItems.forEach(function (item) {
-    if (item.saleCount != 0) {
+  for(var i = 0; i < cartItems.length; i++){
+    if (salesCounts[i] != 0) {
       itemsString +=
-        '名称：' + item.item.name +
-        '，数量：' + item.saleCount + item.item.unit + '\n';
+        '名称：' + cartItems[i].item.name +
+        '，数量：' + salesCounts[i]+ cartItems[i].item.unit + '\n';
     }
-  });
+  }
 
   return itemsString;
 }
 
-Receipt.prototype.getAmount = function (carItems) {
-  var amount = 0;
-  var othis = this;
-
-  carItems.forEach(function (item) {
-    amount += othis.getSubTotal(item.count - item.saleCount, item.item.price);
-  });
-
-  return amount;
+Receipt.prototype.getAmount = function (amount,salesAmounts) {
+  return (amount-this.getSalesAmount(salesAmounts));
 }
 
-Receipt.prototype.getSalesAmount = function (carItems) {
-  var amount = 0;
-  var othis = this;
+Receipt.prototype.getSalesAmount = function (salesAmounts) {
+  var saleSumAmount = 0;
 
-  carItems.forEach(function (item) {
-    if (item.saleCount !== 0) {
-      amount += othis.getSubTotal(item.saleCount, item.item.price);
-    }
-  });
-
-  return amount;
+  for (var i = 0; i < salesAmounts.length; i++){
+    saleSumAmount += salesAmounts[i];
+  }
+  return saleSumAmount;
 }
 
 Receipt.prototype.getSubTotal = function (count, price) {
