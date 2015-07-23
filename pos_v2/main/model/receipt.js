@@ -1,5 +1,10 @@
 function Receipt (cartItems) {
-  this.recript = '***<没钱赚商店>收据***\n' +
+  var currentDate = new Date();
+  var dataShow =new DataShow(currentDate);
+  this.data = dataShow.formattedDateString;
+  this.receipt = '***<没钱赚商店>收据***\n' +
+                 '打印时间：' + this.data + '\n' +
+                '----------------------\n'+
                 this.getItemsString(cartItems) +
                 '----------------------\n' +
                 '挥泪赠送商品：\n' +
@@ -41,7 +46,7 @@ Receipt.prototype.getAmount = function (carItems) {
   var amount = 0;
 
   carItems.forEach(function (item) {
-    amount += this.getSubTotal(item.count - item.saleCount, item.subItem.price);
+    amount += this.getSubTotal(item.count - item.saleCount, item.price);
   });
 
   return amount;
