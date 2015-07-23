@@ -12,6 +12,7 @@ Pos.prototype.getCartItems = function () {
     var barcodeString = tag.split('-')[0];
     var count = tag.split('-')[1] || 1;
     var cartItem = myThis.findCartItem(cartItems, barcodeString);
+
     if (cartItem) {
       cartItem.count += count;
     }
@@ -62,6 +63,7 @@ Pos.prototype.getPromotions = function (cartItems) {
 Pos.prototype.getBuyTwoGetOneFree = function (promotions) {
   for (var i = 0; i < promotions.length; i++) {
     var promotion = new Promotion(promotions[i].type, promotions[i].barcodes);
+
     if (promotion.type === 'BUY_TWO_GET_ONE_FREE') {
       return promotion.barcodes;
     }
@@ -74,11 +76,14 @@ Pos.prototype.sale = function (count) {
 
 Pos.prototype.calculateSalesCount = function (promotions, cartItem) {
   var barcodes = this.getBuyTwoGetOneFree(promotions);
-  for (var i = 0; i < barcodes.length; i++)
+
+  for (var i = 0; i < barcodes.length; i++) {
     if (cartItem.barcode === barcodes[i]) {
       cartItem.saleCount = this.sale(cartItem.count);
       break;
     }
+  }
+
 };
 
 

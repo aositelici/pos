@@ -34,7 +34,6 @@ function getCartItems(barcodes) {
     var barcodeString = barcode.split('-')[0];
     var count = barcode.split('-')[1] || 1;
     var cartItem = findCartItem(cartItems, barcodeString);
-    //console.log(cartItem);
     if (cartItem) {
       cartItem.count += count;
     }
@@ -46,8 +45,6 @@ function getCartItems(barcodes) {
             saleCount: 0
           });
       }
-
-
   });
   return cartItems;
 }
@@ -61,6 +58,7 @@ function getPromotions(cartItems) {
 
 function findCartItem(cartItems, barcode) {
   var value;
+
   cartItems.forEach(function (cartItem) {
    if (cartItem.subItem.barcode === barcode) {
    value = cartItem;
@@ -72,6 +70,7 @@ function findCartItem(cartItems, barcode) {
 
 function calculateSalesCount(items, itemCart) {
   var barcodes = items[0].barcodes;
+
   for (var i = 0; i < barcodes.length; i++)
     if (itemCart.subItem.barcode === barcodes[i]) {
       itemCart.saleCount = sale(itemCart.count);
@@ -99,6 +98,7 @@ function getAmount(items) {
 
 function getItemsString(items) {
   var itemsString = '';
+
   items.forEach(function (item) {
     itemsString +=
       '名称：' + item.subItem.name +
