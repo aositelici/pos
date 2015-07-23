@@ -78,11 +78,14 @@ Pos.prototype.getBuyTwoGetOneFree = function(promotions) {
     }
   }
 };
+Pos.prototype.sale = function(count) {
+  return Math.floor(count / 3);
+}
 Pos.prototype.calculateSalesCount = function(promotions, itemCart) {
   var barcodes = this.getBuyTwoGetOneFree(promotions);
   for (var i = 0; i < barcodes.length; i++)
     if (itemCart.barcode === barcodes[i]) {
-      itemCart.saleCount = sale(itemCart.count);
+      itemCart.saleCount = this.sale(itemCart.count);
       break;
     }
 };

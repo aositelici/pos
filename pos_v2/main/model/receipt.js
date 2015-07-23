@@ -16,13 +16,13 @@ function Receipt (cartItems) {
 }
 Receipt.prototype.getItemsString = function (carItems) {
   var itemsString = '';
-
+  var othis = this;
   carItems.forEach(function (item) {
     itemsString +=
       '名称：' + item.name +
       '，数量：' + item.count + item.unit +
-      '，单价：' + this.formatPrice(item.price) +
-      '(元)，小计：' + this.formatPrice(this.getSubTotal(item.count - item.saleCount, item.price)) + '(元)\n';
+      '，单价：' + othis.formatPrice(item.price) +
+      '(元)，小计：' + othis.formatPrice(othis.getSubTotal(item.count - item.saleCount, item.price)) + '(元)\n';
   });
 
   return itemsString;
@@ -44,9 +44,9 @@ Receipt.prototype.getSalesItemString = function (carItems) {
 
 Receipt.prototype.getAmount = function (carItems) {
   var amount = 0;
-
+  var othis = this;
   carItems.forEach(function (item) {
-    amount += this.getSubTotal(item.count - item.saleCount, item.price);
+    amount += othis.getSubTotal(item.count - item.saleCount, item.price);
   });
 
   return amount;
@@ -54,10 +54,10 @@ Receipt.prototype.getAmount = function (carItems) {
 
 Receipt.prototype.getSalesAmount = function (carItems) {
   var amount = 0;
-
+  var othis = this;
   carItems.forEach(function (item) {
     if (item.saleCount !== 0) {
-      amount += this.getSubTotal(item.saleCount, item.price);
+      amount += othis.getSubTotal(item.saleCount, item.price);
     }
 
   });
